@@ -90,17 +90,43 @@ class deebot extends eqLogic {
     }
 
     public function postUpdate() {
-      $deebotCmd = deebotCmd::byEqLogicIdAndLogicalId($this->getId(),'button');
+      $deebotCmd = deebotCmd::byEqLogicIdAndLogicalId($this->getId(),'data');
       if (!is_object($deebotCmd)) {
-        $deebotCmd = new deebotCmd();
-        $deebotCmd->setName('button');
-        $deebotCmd->setEqLogic_id($this->getId());
-        $deebotCmd->setLogicalId('button');
-        $deebotCmd->setType('info');
-        $deebotCmd->setSubType('binary');
-        $deebotCmd->setConfiguration('returnStateValue',0);
-        $deebotCmd->setConfiguration('returnStateTime',1);
-        $deebotCmd->save();
+        // Création de la commande
+        $cmd = new deebotCmd();
+        // Nom affiché
+        $cmd->setName('Données');
+        // Identifiant de la commande
+        $cmd->setLogicalId('data');
+        // Identifiant de l'équipement
+        $cmd->setEqLogic_id($this->getId());
+        // Type de la commande
+        $cmd->setType('info');
+        // Sous-type de la commande
+        $cmd->setSubType('string');
+        // Visibilité de la commande
+        $cmd->setIsVisible(1);
+        // Sauvegarde de la commande
+        $cmd->save();
+      }
+      $deebotCmd = deebotCmd::byEqLogicIdAndLogicalId($this->getId(),'refresh');
+      if (!is_object($deebotCmd)) {
+        // Création de la commande
+        $cmd = new deebotCmd();
+        // Nom affiché
+        $cmd->setName('Rafraichir');
+        // Identifiant de la commande
+        $cmd->setLogicalId('refresh');
+        // Identifiant de l'équipement
+        $cmd->setEqLogic_id($this->getId());
+        // Type de la commande
+        $cmd->setType('action');
+        // Sous-type de la commande
+        $cmd->setSubType('other');
+        // Visibilité de la commande
+        $cmd->setIsVisible(1);
+        // Sauvegarde de la commande
+        $cmd->save();
       }
     }
 
@@ -151,9 +177,18 @@ class deebotCmd extends cmd {
      */
 
     public function execute($_options = array()) {
-        if ($this->getLogicalId() == 'button') {
-          log::add('deebot','debug','TEST EXCECUTE cmd');       
-        }
+      log::add('deebot','debug','DEEBOT EXCECUTE CMD:'.$this->getLogicalId());    
+      if ($this->getLogicalId() == 'refresh') {
+        log::add('deebot','debug','Deebot refresh');
+        // On récupère l'équipement à partir de l'identifiant fournit par la commande
+        $deebotObj = deebot::byId($this->getEqlogic_id());
+        // On récupère la commande 'data' appartenant à l'équipement
+        $dataCmd = $deebotObj->getCmd('info', 'data');
+        // On lui ajoute un évènement avec pour information 'Données de test'
+        $dataCmd->event(date('H:i'));
+        // On sauvegarde cet évènement
+        $dataCmd->save();      
+      }
     }
 
     /*     * **********************Getteur Setteur*************************** */
