@@ -64,7 +64,7 @@ class deebot extends eqLogic {
     public static function dependancy_install() {
         log::add('deebot','info','Installation des dépéndances nodejs');
         $resource_path = realpath(dirname(__FILE__) . '/../../resources');
-	log::add('deebot', 'debug', '/bin/bash ' . $resource_path . '/nodejs.sh ' . $resource_path . ' deebot > ' . log::getPathToLog('deebot_dep') . ' 2>&1 &');
+        log::add('deebot', 'debug', '/bin/bash ' . $resource_path . '/nodejs.sh ' . $resource_path . ' deebot > ' . log::getPathToLog('deebot_dep') . ' 2>&1 &');
         passthru('/bin/bash ' . $resource_path . '/nodejs.sh ' . $resource_path . ' deebot > ' . log::getPathToLog('deebot_dep') . ' 2>&1 &');
     }
 
@@ -90,7 +90,26 @@ class deebot extends eqLogic {
     }
 
     public function postUpdate() {
-        
+        $getDataCmd = $this->getCmd(null, 'data');
+        if (!is_object($getDataCmd))
+        {
+            // Création de la commande
+            $cmd = new tutorielCmd();
+            // Nom affiché
+            $cmd->setName('Données');
+            // Identifiant de la commande
+            $cmd->setLogicalId('data');
+            // Identifiant de l'équipement
+            $cmd->setEqLogic_id($this->getId());
+            // Type de la commande
+            $cmd->setType('info');
+            // Sous-type de la commande
+            $cmd->setSubType('string');
+            // Visibilité de la commande
+            $cmd->setIsVisible(1);
+            // Sauvegarde de la commande
+            $cmd->save();
+        }
     }
 
     public function preRemove() {
