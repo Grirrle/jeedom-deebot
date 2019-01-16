@@ -90,26 +90,18 @@ class deebot extends eqLogic {
     }
 
     public function postUpdate() {
-        $getDataCmd = $this->getCmd(null, 'data');
-        if (!is_object($getDataCmd))
-        {
-            // Création de la commande
-            $cmd = new tutorielCmd();
-            // Nom affiché
-            $cmd->setName('Données');
-            // Identifiant de la commande
-            $cmd->setLogicalId('data');
-            // Identifiant de l'équipement
-            $cmd->setEqLogic_id($this->getId());
-            // Type de la commande
-            $cmd->setType('info');
-            // Sous-type de la commande
-            $cmd->setSubType('string');
-            // Visibilité de la commande
-            $cmd->setIsVisible(1);
-            // Sauvegarde de la commande
-            $cmd->save();
-        }
+      $deebotCmd = deebotCmd::byEqLogicIdAndLogicalId($this->getId(),'button');
+      if (!is_object($deebotCmd)) {
+        $deebotCmd = new deebotCmd();
+        $deebotCmd->setName('button');
+        $deebotCmd->setEqLogic_id($this->getId());
+        $deebotCmd->setLogicalId('button');
+        $deebotCmd->setType('info');
+        $deebotCmd->setSubType('binary');
+        $deebotCmd->setConfiguration('returnStateValue',0);
+        $deebotCmd->setConfiguration('returnStateTime',1);
+        $deebotCmd->save();
+      }
     }
 
     public function preRemove() {
@@ -159,7 +151,9 @@ class deebotCmd extends cmd {
      */
 
     public function execute($_options = array()) {
-        
+        if ($this->getLogicalId() == 'button') {
+          log::add('deebot','debug','TEST EXCECUTE cmd');       
+        }
     }
 
     /*     * **********************Getteur Setteur*************************** */
