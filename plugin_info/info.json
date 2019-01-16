@@ -1,0 +1,20 @@
+{
+	"id" : "deebot",
+	"name" : "ECOVACS ROBOTICS DEEBOT",
+	"description" : "Plugin pour interagir avec les Robot nettoyeur Deebot",
+	"licence" : "AGPL",
+	"author" : "Baptiste Mougel",
+	"require" : "3.2",
+	"category" : "devicecommunication",
+	"hasDependency" : true,
+	"hasOwnDeamon" : true,
+	"maxDependancyInstallTime" : 0,
+	"changelog" : "https://jeedom.github.io/plugin-template/#language#/changelog",
+	"documentation" : "https://jeedom.github.io/plugin-template/#language#/",
+	"link" : {
+		"forum":"Lien vers le forum",
+		"video" : "Lien vers une video"
+	},
+	"language" : ["fr_FR"],
+	"compatibility" : ["miniplus","smart","rpi","docker","diy","mobile"]
+}

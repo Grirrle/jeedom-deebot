@@ -1,0 +1,10 @@
+{
+  "name": "deebot",
+  "version": "0.0.1",
+  "description": "Node to connect Deebot to Jeedom",
+  "license": "GPL-3.0",
+  "repository": "npm/npm",
+  "dependencies": {
+    "sucks": "latest"
+  }
+}
